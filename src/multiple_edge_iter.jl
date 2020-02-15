@@ -23,12 +23,12 @@ function iterate(eit::MultipleEdgeIter{G}, state=(one(eltype(eit.g)), one(eltype
             continue
         end
         if is_directed(g)
-            e = MultipleEdge(u, list_u[i], g.adjmx[u, list_u[i]])
+            e = MultipleEdge(u, list_u[i], g.adjmx[list_u[i], u])
             state = (u, i + 1)
             return e, state
         else
             if list_u[i] >= u
-                e = MultipleEdge(u, list_u[i], g.adjmx[u, list_u[i]])
+                e = MultipleEdge(u, list_u[i], g.adjmx[list_u[i], u])
                 state = (u, i + 1)
                 return e, state
             else
