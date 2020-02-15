@@ -16,6 +16,17 @@ end
     m[4,3] += 1
     m[4,3] = 0
     g = Multigraph(m)
+
+    i = 0
+    for me in edges(g)
+        for e in me
+            i += 1
+        end
+        # println(me)
+    end
+    @test multype(g) == Int
+    @test i == 4
+    ne(g)
     @test nv(g) == 4 && ne(g, true) == 4 && ne(g) == 2
 
     add_vertices!(g,3)
@@ -23,7 +34,10 @@ end
 
     @test has_edge(g, 1, 2, 2)
     @test rem_vertices!(g, [1, 5, 4, 6, 8]) == [2, 3, 7]
+    add_edge!(g, 2, 3, 2)
+    rem_edge!(g, 2, 3, 1)
 
-    @test has_edge(g, MultipleEdge(1,2))
-    # @test has_
+    @test has_edge(g, 2, 3)
+    @test !has_edge(g, 2, 3, 2)
+    @test !has_edge(g, 2, 2)
 end
