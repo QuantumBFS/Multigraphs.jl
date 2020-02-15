@@ -1,7 +1,7 @@
 import Base: eltype, Pair, Tuple, show, ==, iterate
 import LightGraphs: AbstractEdge, SimpleEdge, src, dst, reverse
 
-export AbstractMultipleEdge, MultipleEdge
+export AbstractMultipleEdge, MultipleEdge, mul
 
 abstract type AbstractMultipleEdge{T, U} <: AbstractEdge{T} end
 

@@ -1,6 +1,6 @@
-using SparseArrays
+using SparseArrays, LinearAlgebra
 
-import LightGraphs: ne, is_directed, add_edge!
+import LightGraphs: ne, is_directed, add_edge!, rem_edge!
 
 export Multigraph
 
@@ -30,6 +30,7 @@ function rem_edge!(g::Multigraph{T, U}, e::AbstractMultipleEdge{T, U}) where {T<
     if has_edge(g, e)
         g.adjmx[src(e), dst(e)] -= mul(e)
         g.adjmx[dst(e), src(e)] -= mul(e)
+        dropzeros!(g.adjmx)
     else
         error("This multigraph has no {$(e)}!")
     end

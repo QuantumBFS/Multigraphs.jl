@@ -1,6 +1,6 @@
 using LightGraphs
 
-import Base: eltype
+import Base: eltype, iterate
 
 export MultipleEdgeIter
 

@@ -1,5 +1,4 @@
 using LightGraphs
-using LinearAlgebra
 using SparseArrays
 
 import Base: show, eltype
@@ -7,6 +6,7 @@ import LightGraphs: nv, has_edge, edgetype, add_edge!, rem_edge!, rem_vertex!,
     rem_vertices!, add_vertex!, add_vertices!, outneighbors, edges
 
 export AbstractMultigraph
+export multype
 
 abstract type AbstractMultigraph{T<:Integer, U<:Integer} <:AbstractGraph{T} end
 
