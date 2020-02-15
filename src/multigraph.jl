@@ -23,7 +23,7 @@ mutable struct Multigraph{T<:Integer, U<:Integer} <: AbstractMultigraph{T, U}
 end
 
 Multigraph(adjmx::SparseMatrixCSC{U, T}) where {U<:Integer, T<:Integer} = Multigraph{T, U}(adjmx)
-Multigraph(m::AbstractMatrix{U}) where {U<:Integer} = Multigraph{Int, U}(SparseMatrixCSC{U, T}(m))
+Multigraph(m::AbstractMatrix{U}) where {U<:Integer} = Multigraph{Int, U}(SparseMatrixCSC{U, Int}(m))
 Multigraph(n::T) where {T<:Integer} = Multigraph(spzeros(Int, n, n))
 
 # ne(g) for counting multiple edges, ne(g, true) for counting simple edges
@@ -50,6 +50,8 @@ end
 
 inneighbors(g::Multigraph, v) = outneighbors(g, v)
 degree(g::Multigraph) = [sum(g.adjmx[:,v]) for v in 1:nv(g)]
-degree(g::Multigraph, v) = degree(g)[v]
-indegree(g...) = degree(g...)
-outdegree(g...) = degree(g...)
+indegree(g::Multigraph) = degree(g)
+outdegree(g::Multigraph) = degree(g)
+degree(g::Multigraph{T,U}, v::T) where {T<:Integer, U<:Integer} = degree(g)[v]
+indegree(g::Multigraph{T,U}, v::T) where {T<:Integer, U<:Integer} = degree(g, v)
+outdegree(g::Multigraph{T,U}, v::T) where {T<:Integer, U<:Integer} = degree(g, v)
