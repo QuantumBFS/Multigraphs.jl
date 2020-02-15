@@ -24,9 +24,9 @@ vertices(g::AbstractMultigraph{T, U}) where {T<:Integer, U<:Integer} = one(T):nv
 
 has_edge(g::AbstractMultigraph{T, U}, e::AbstractMultipleEdge{T, U}) where {T<:Integer, U<:Integer} = (g.adjmx[src(e), dst(e)] >= mul(e))
 
-has_edge(g::AbstractMultigraph{T, U}, t) where {T<:Integer, U<:Integer} = has_edge(g, MultipleEdge(x))
-add_edge!(g::AbstractMultigraph{T, U}, t) where {T<:Integer, U<:Integer} = add_edge!(g, MultipleEdge(x))
-rem_edge!(g::AbstractMultigraph{T, U}, t) where {T<:Integer, U<:Integer} = rem_edge!(g, MultipleEdge(x))
+has_edge(g::AbstractMultigraph{T, U}, t) where {T<:Integer, U<:Integer} = has_edge(g, MultipleEdge(t))
+add_edge!(g::AbstractMultigraph{T, U}, t) where {T<:Integer, U<:Integer} = add_edge!(g, MultipleEdge(t))
+rem_edge!(g::AbstractMultigraph{T, U}, t) where {T<:Integer, U<:Integer} = rem_edge!(g, MultipleEdge(t))
 
 has_edge(g::AbstractMultigraph{T, U}, x, y) where {T<:Integer, U<:Integer} = has_edge(g, MultipleEdge(x, y))
 add_edge!(g::AbstractMultigraph{T, U}, x, y) where {T<:Integer, U<:Integer} = add_edge!(g, MultipleEdge(x, y))
