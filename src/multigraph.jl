@@ -1,12 +1,22 @@
 using SparseArrays, LinearAlgebra
 
-import LightGraphs: ne, is_directed, add_edge!, rem_edge!
+import LightGraphs: ne, is_directed, add_edge!, rem_edge!, inneighbors
 
 export Multigraph
 
 mutable struct Multigraph{T<:Integer, U<:Integer} <: AbstractMultigraph{T, U}
     adjmx::SparseMatrixCSC{U, T}
     function Multigraph{T, U}(adjmx::SparseMatrixCSC{U, T}) where {T<:Integer, U<:Integer}
+        m, n = size(adjmx)
+        if m != n
+            error("Adjacency matrices should be square!")
+        end
+        if !issymmetric(adjmx)
+            error("Adjacency matrices should be symmetric!")
+        end
+        if nnz(adjmx .!= 0) != nnz(adjmx .> 0)
+            error("All elements in adjacency matrices should be non-negative!")
+        end
         new{T, U}(dropzeros(adjmx))
     end
 end
@@ -36,3 +46,5 @@ function rem_edge!(g::Multigraph{T, U}, e::AbstractMultipleEdge{T, U}) where {T<
     end
     g
 end
+
+inneighbors(g::Multigraph, v) = outneighbors(g, v)
