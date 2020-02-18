@@ -1,6 +1,6 @@
 using LightGraphs
 
-import Base: eltype, iterate
+import Base: eltype, iterate, length
 
 export MultipleEdgeIter
 
@@ -41,3 +41,5 @@ function iterate(eit::MultipleEdgeIter{G}, state=(one(eltype(eit.g)), one(eltype
         return nothing
     end
 end
+
+length(eit::MultipleEdgeIter) = ne(eit.g)

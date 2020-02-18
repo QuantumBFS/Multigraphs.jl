@@ -1,3 +1,8 @@
+"""
+    Multigraphs
+
+An multigraph extension for `LightGraphs`.
+"""
 module Multigraphs
 
 include("multiple_edge.jl")

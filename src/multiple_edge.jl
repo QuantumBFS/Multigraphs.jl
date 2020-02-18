@@ -3,8 +3,32 @@ import LightGraphs: AbstractEdge, SimpleEdge, src, dst, reverse
 
 export AbstractMultipleEdge, MultipleEdge, mul
 
+"""
+    AbstractMultipleEdge{T, U} <: AbstractEdge{T}
+
+An abstract type representing multiple edges.
+"""
 abstract type AbstractMultipleEdge{T, U} <: AbstractEdge{T} end
 
+"""
+    MultipleEdge{T, U} <: AbstractMultipleEdge{T, U}
+
+A struct representing multiple edges.
+
+## Examples
+```jltestdoc
+julia> using LightGraphs, Multigraphs
+
+julia> me = MultipleEdge(1, 2, 3)
+Multiple edge 1 => 2 with multiplicity 3
+
+julia> for e in me println(e) end
+Edge 1 => 2
+Edge 1 => 2
+Edge 1 => 2
+
+```
+"""
 struct MultipleEdge{T<:Integer, U<:Integer} <: AbstractMultipleEdge{T, U}
     src::T
     dst::T
@@ -35,6 +59,23 @@ eltype(e::T) where {T<:AbstractMultipleEdge} = eltype(src(e))
 
 src(e::AbstractMultipleEdge) = e.src
 dst(e::AbstractMultipleEdge) = e.dst
+
+"""
+    mul(e)
+
+Return the multiplicity of the multiple edge `e`.
+
+## Examples
+```jltestdoc
+julia> using LightGraphs, Multigraphs
+
+julia> me = MultipleEdge(1, 2, 3)
+Multiple edge 1 => 2 with multiplicity 3
+
+julia> mul(me)
+3
+
+"""
 mul(e::AbstractMultipleEdge) = e.mul
 
 show(io::IO, e::AbstractMultipleEdge) = print(io, "Multiple edge $(src(e)) => $(dst(e)) with multiplicity $(mul(e))")
