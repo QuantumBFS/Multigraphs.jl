@@ -34,5 +34,4 @@ julia> for e in mes[1] # e is a LightGraphs.SimpleEdge
 Edge 1 => 2
 Edge 1 => 2
 
-
 ```
