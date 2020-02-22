@@ -1,4 +1,4 @@
-import Base: eltype, Pair, Tuple, show, ==, iterate
+import Base: eltype, Pair, Tuple, show, ==, iterate, length
 import LightGraphs: AbstractEdge, SimpleEdge, src, dst, reverse
 
 export AbstractMultipleEdge, MultipleEdge, mul
@@ -96,3 +96,5 @@ function iterate(e::MultipleEdge{T, U}, state::U=one(U)) where {T<:Integer, U<:I
         return (SimpleEdge(e), state)
     end
 end
+
+length(me::MultipleEdge) = mul(me)
