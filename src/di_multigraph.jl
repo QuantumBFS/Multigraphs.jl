@@ -52,7 +52,7 @@ julia> DiMultigraph(zeros(Int, 4, 4))
 {4, 0} directed $(Int) multigraph with $(Int) multiplicities
 ```
 """
-DiMultigraph(m::AbstractMatrix{U}) where {U<:Integer} = DiMultigraph{Int, U}(SparseMatrixCSC{U, T}(m))
+DiMultigraph(m::AbstractMatrix{U}) where {U<:Integer} = DiMultigraph{Int, U}(SparseMatrixCSC{U, Int}(m))
 
 """
     DiMultigraph(n::T) where {T<:Integer}
