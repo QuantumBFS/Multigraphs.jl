@@ -6,7 +6,7 @@
 Multigraphs extension for `LightGraphs.jl`.
 
 Examples:
-```
+```julia
 using LightGraphs, Multigraphs
 
 julia> mg = Multigraph(3) # use DiMultigraph for directed multigraphs.
