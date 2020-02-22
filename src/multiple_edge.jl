@@ -83,7 +83,7 @@ show(io::IO, e::AbstractMultipleEdge) = print(io, "Multiple edge $(src(e)) => $(
 Tuple(e::AbstractMultipleEdge) = (src(e), dst(e), mul(e))
 SimpleEdge(e::AbstractMultipleEdge) = SimpleEdge(src(e), dst(e))
 
-reverse(e::T) where {T<:AbstractMultipleEdge} = T(dst(e), src(e), mul(e))
+reverse(e::T) where {T<:AbstractMultipleEdge} = MultipleEdge(dst(e), src(e), mul(e))
 ==(e1::AbstractMultipleEdge, e2::AbstractMultipleEdge) = (src(e1) == src(e2) && dst(e1) == dst(e2) && mul(e1) == mul(e2))
 ==(e1::AbstractMultipleEdge, e2::AbstractEdge) = (src(e1) == src(e2) && dst(e1) == dst(e2) && mul(e1) == 1)
 ==(e1::AbstractEdge, e2::AbstractMultipleEdge) = (src(e1) == src(e2) && dst(e1) == dst(e2) && mul(e2) == 1)
