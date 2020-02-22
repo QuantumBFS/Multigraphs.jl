@@ -2,7 +2,7 @@ using LightGraphs
 using SparseArrays
 
 import Base: show, eltype
-import LightGraphs: nv, has_edge, edgetype, add_edge!, rem_edge!, rem_vertex!,
+import LightGraphs: nv, has_edge, has_vertex, edgetype, add_edge!, rem_edge!, rem_vertex!,
     rem_vertices!, add_vertex!, add_vertices!, outneighbors, inneighbors, vertices, edges,
     adjacency_matrix
 
