@@ -1,8 +1,17 @@
 using Multigraphs, LightGraphs, SparseArrays
 using Test
 
-@testset "Multigraphs.jl" begin
-    # Write your own tests here.
+# @testset "Multigraphs.jl" begin
+#     # Write your own tests here.
+# end
+
+@testset "multiple_edge.jl" begin
+    me = MultipleEdge(1, 2, 3)
+    @test src(me) == 1 && dst(me) == 2 && mul(me) == 3
+    e0 = LightGraphs.SimpleEdge(me)
+    @test [e0 == e for e in me] == [true for i = 1:mul(me)]
+    @test Tuple(me) == (1,2,3)
+    length(me) == mul(me)
 end
 
 @testset "multigraph.jl" begin
@@ -16,6 +25,7 @@ end
     m[4,3] += 1
     m[4,3] = 0
     g = Multigraph(m)
+    @test !is_directed(g)
 
     i = 0
     for me in edges(g)
@@ -40,6 +50,10 @@ end
     @test has_edge(g, 2, 3)
     @test !has_edge(g, 2, 3, 2)
     @test !has_edge(g, 2, 2)
+    for v in vertices(g)
+        @test inneighbors(g, v) == outneighbors(g, v)
+        @test degree(g, v) == indegree(g, v) && indegree(g, v) == outdegree(g, v)
+    end
 end
 
 @testset "di_multigraph.jl" begin
@@ -53,6 +67,7 @@ end
     m[4,3] += 1
     m[4,3] = 0
     g = DiMultigraph(m)
+    @test is_directed(g)
 
     i = 0
     for me in edges(g)
@@ -64,8 +79,10 @@ end
     @test multype(g) == Int
     @test i == 6
 
-    @test outneighbors(g, 2) == [1]
-    @test inneighbors(g, 2) == [1, 3]
+    @test outneighbors(g, 2) == [1, 3]
+    @test inneighbors(g, 2) == [1]
+    @test outdegree(g, 2) == 4
+    @test indegree(g, 2) == 2
 
     @test nv(g) == 4 && ne(g, true) == 6 && ne(g) == 3
 
