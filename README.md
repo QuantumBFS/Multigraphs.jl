@@ -9,7 +9,7 @@ Examples:
 ```
 using LightGraphs, Multigraphs
 
-julia> mg = Multigraph(3) # construct an undirected multigraph with 3 vertices and 0 multiple edge. Use DiMultigraph for directed multigraphs.
+julia> mg = Multigraph(3) # use DiMultigraph for directed multigraphs.
 {3, 0} undirected Int64 multigraph with Int64 multiplicities
 
 julia> add_edge!(mg, 1, 2, 2) # add a multiple edge from 1 to 2 with multiplicity 2
