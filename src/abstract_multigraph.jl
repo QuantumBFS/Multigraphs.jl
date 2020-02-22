@@ -3,7 +3,7 @@ using SparseArrays
 
 import Base: show, eltype
 import LightGraphs: nv, has_edge, edgetype, add_edge!, rem_edge!, rem_vertex!,
-    rem_vertices!, add_vertex!, add_vertices!, outneighbors, vertices, edges,
+    rem_vertices!, add_vertex!, add_vertices!, outneighbors, inneighbors, vertices, edges,
     adjacency_matrix
 
 export AbstractMultigraph
@@ -157,7 +157,14 @@ add_vertex!(g::AbstractMultigraph{T, U}) where {T<:Integer, U<:Integer} = add_ve
 function outneighbors(g::AbstractMultigraph, v::Integer)
     if v in vertices(g)
         mat = g.adjmx
-        return mat.rowval[mat.colptr[v]:(mat.colptr[v+1]-1)]
+        return mat[v, :].nzind
+    end
+end
+
+function inneighbors(g::AbstractMultigraph, v::Integer)
+    if v in vertices(g)
+        mat = g.adjmx
+        return mat[:, v].nzind
     end
 end
 

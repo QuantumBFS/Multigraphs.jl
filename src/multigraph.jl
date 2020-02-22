@@ -1,6 +1,6 @@
 using SparseArrays, LinearAlgebra
 
-import LightGraphs: ne, is_directed, add_edge!, rem_edge!, inneighbors,
+import LightGraphs: ne, is_directed, add_edge!, rem_edge!,
         degree, indegree, outdegree
 
 export Multigraph
@@ -130,10 +130,10 @@ function rem_edge!(g::Multigraph{T, U}, e::AbstractMultipleEdge{T, U}) where {T<
     end
 end
 
-inneighbors(g::Multigraph, v) = outneighbors(g, v)
+# inneighbors(g::Multigraph, v) = outneighbors(g, v)
 degree(g::Multigraph) = [(sum(g.adjmx[:,v]) - g.adjmx[v,v] ÷ 2) for v in 1:nv(g)]
 indegree(g::Multigraph) = degree(g)
 outdegree(g::Multigraph) = degree(g)
 degree(g::Multigraph{T,U}, v::T) where {T<:Integer, U<:Integer} = degree(g)[v]
-indegree(g::Multigraph{T,U}, v::T) where {T<:Integer, U<:Integer} = degree(g, v)
-outdegree(g::Multigraph{T,U}, v::T) where {T<:Integer, U<:Integer} = degree(g, v)
+indegree(g::Multigraph{T,U}, v::T) where {T<:Integer, U<:Integer} = indegree(g)[v]
+outdegree(g::Multigraph{T,U}, v::T) where {T<:Integer, U<:Integer} = outdegree(g)[v]
