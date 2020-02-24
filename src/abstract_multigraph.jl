@@ -1,7 +1,7 @@
 using LightGraphs
 using SparseArrays
 
-import Base: show, eltype
+import Base: show, eltype, copy
 import LightGraphs: nv, has_edge, has_vertex, edgetype, add_edge!, rem_edge!, rem_vertex!,
     rem_vertices!, add_vertex!, add_vertices!, outneighbors, inneighbors, vertices, edges,
     adjacency_matrix
@@ -15,6 +15,11 @@ export multype
 An abstract type representing a multigraph.
 """
 abstract type AbstractMultigraph{T<:Integer, U<:Integer} <:AbstractGraph{T} end
+
+function copy(g::AbstractMultigraph{T, U}) where {T, U}
+    new_g = is_directed(g) ? DiMultigraph(copy(g.adjmx)) : Multigraph(copy(g.adjmx))
+    return new_g
+end
 
 function show(io::IO, g::AbstractMultigraph{T, U}) where {T,U}
     dir = is_directed(g) ? "directed" : "undirected"
