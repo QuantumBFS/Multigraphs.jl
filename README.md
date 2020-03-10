@@ -5,7 +5,25 @@
 
 Multigraphs extension for `LightGraphs.jl`.
 
-Examples:
+## Installation
+
+<p>
+Multigraphs is a &nbsp;
+    <a href="https://julialang.org">
+        <img src="https://julialang.org/favicon.ico" width="16em">
+        Julia Language
+    </a>
+    &nbsp; package. To install Multigraphs,
+    please <a href="https://docs.julialang.org/en/v1/manual/getting-started/">open
+    Julia's interactive session (known as REPL)</a> and press <kbd>]</kbd> key in the REPL to use the package mode, then type the following command
+</p>
+
+```julia
+pkg> add https://github.com/QuantumBFS/Multigraphs.jl.git
+```
+
+## Examples
+
 ```julia
 using LightGraphs, Multigraphs
 
@@ -43,3 +61,7 @@ Edge 1 => 2
 Edge 1 => 2
 
 ```
+
+## License
+
+MIT License
