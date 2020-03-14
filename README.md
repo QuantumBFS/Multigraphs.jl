@@ -19,7 +19,7 @@ Multigraphs is a &nbsp;
 </p>
 
 ```julia
-pkg> add https://github.com/QuantumBFS/Multigraphs.jl.git
+pkg> add Multigraphs
 ```
 
 ## Examples
