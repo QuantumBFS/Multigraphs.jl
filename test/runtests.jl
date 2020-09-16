@@ -14,5 +14,5 @@ end
 end
 
 @testset "di_multigraph.jl" begin
-    
+    include("di_multigraph_adjlist.jl")
 end
