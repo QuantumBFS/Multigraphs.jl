@@ -4,7 +4,7 @@ import Base: copy
 import LightGraphs: nv, has_edge, add_edge!, rem_edge!, rem_vertex!,
     rem_vertices!, add_vertex!, add_vertices!, outneighbors, inneighbors, neighbors,
     vertices, adjacency_matrix, ne, is_directed, degree, indegree, outdegree, edges,
-    has_vertex
+    has_vertex, all_neighbors
 
 export Multigraph
 
@@ -66,7 +66,6 @@ function adjacency_matrix(mg::Multigraph)
         for id2 in mg.adjlist[id1]
             v2 = searchsortedfirst(ids, id2)
             @inbounds adjmx[v1, v2] += 1
-            @inbounds adjmx[v2, v1] += 1
         end
     end
     return adjmx
@@ -138,6 +137,7 @@ function outneighbors(mg::Multigraph, v::Integer; count_mul::Bool = false)
 end
 neighbors(mg::Multigraph, v::Integer; count_mul::Bool = false) = outneighbors(mg, v, count_mul = count_mul)
 inneighbors(mg::Multigraph, v::Integer; count_mul::Bool = false) = outneighbors(mg, v, count_mul = count_mul)
+all_neighbors(mg::Multigraph, v::Integer) = outneighbors(mg, v)
 
 function mul(mg::Multigraph, s::Integer, d::Integer)
     (has_vertex(mg, s) && has_vertex(mg, d)) || error("Vertices not found!")

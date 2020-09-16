@@ -1,15 +1,16 @@
+using Multigraphs, LightGraphs, SparseArrays
 try
     m2 = spzeros(Int, 2, 3)
     dg = Multigraph(m2)
 catch e
-    @test e != nothing
+    @test e !== nothing
 end
 try
     m2 = spzeros(Int, 2, 2)
     m2[1, 2] = 2
     dg = Multigraph(m2)
 catch e
-    @test e != nothing
+    @test e !== nothing
 end
 try
     m2 = spzeros(Int, 2, 2)
@@ -17,7 +18,7 @@ try
     m2[2, 1] = -1
     dg = Multigraph(m2)
 catch e
-    @test e != nothing
+    @test e !== nothing
 end
 
 m = spzeros(Int, 4, 4)
@@ -35,6 +36,7 @@ g = Multigraph(Matrix(m))
 g0 = Multigraph(2)
 @test !add_edge!(g0, 2, 3) && !rem_edge!(g0, 1, 2)
 g1 = Multigraph(path_graph(3))
+@test adjacency_matrix(g) == m
 
 @test !is_directed(g)
 @test edgetype(g) == MultipleEdge{Int, Int}
