@@ -2,80 +2,78 @@ using LightGraphs
 using SparseArrays
 
 import Base: show, eltype, copy
-import LightGraphs: nv, has_edge, has_vertex, edgetype, add_edge!, rem_edge!, rem_vertex!,
+import LightGraphs: nv, has_edge, has_vertex, add_edge!, rem_edge!, rem_vertex!,
     rem_vertices!, add_vertex!, add_vertices!, outneighbors, inneighbors, vertices, edges,
-    adjacency_matrix
+    adjacency_matrix, src, dst, nv, edgetype
 
 export AbstractMultigraph
-export multype
+# export multype
 
 """
-    AbstractMultigraph{T, U}<:AbstractGraph{T}
+    AbstractMultigraph{T}<:AbstractGraph{T}
 
 An abstract type representing a multigraph.
 """
-abstract type AbstractMultigraph{T<:Integer, U<:Integer} <:AbstractGraph{T} end
+abstract type AbstractMultigraph{T<:Integer} <:AbstractGraph{T} end
 
-function copy(g::AbstractMultigraph{T, U}) where {T, U}
-    new_g = is_directed(g) ? DiMultigraph(copy(g.adjmx)) : Multigraph(copy(g.adjmx))
-    return new_g
+function copy(mg::AbstractMultigraph{T}) where {T} end
+
+function show(io::IO, mg::AbstractMultigraph{T}) where {T}
+    dir = is_directed(mg) ? "directed" : "undirected"
+    print(io, "{$(nv(mg)), $(ne(mg))} $(dir) $(T) multigraph")
 end
 
-function show(io::IO, g::AbstractMultigraph{T, U}) where {T,U}
-    dir = is_directed(g) ? "directed" : "undirected"
-    print(io, "{$(nv(g)), $(ne(g))} $(dir) $(T) multigraph with $(U) multiplicities")
-end
+eltype(mg::AbstractMultigraph{T}) where {T<:Integer} = T
+multype(mg::AbstractMultigraph) = Int
+edgetype(mg::AbstractMultigraph) = MultipleEdge{eltype(mg), multype(mg)}
 
-eltype(g::AbstractMultigraph{T, U}) where {T<:Integer, U<:Integer} = T
-multype(g::AbstractMultigraph{T, U}) where {T<:Integer, U<:Integer} = U
-edgetype(g::AbstractMultigraph) = MultipleEdge{eltype(g), multype(g)}
+function nv(mg::AbstractMultigraph) end
+function vertices(mg::AbstractMultigraph) end
 
-nv(g::AbstractMultigraph) = size(g.adjmx, 1)
-vertices(g::AbstractMultigraph{T, U}) where {T<:Integer, U<:Integer} = one(T):nv(g)
+function adjacency_matrix(mg::AbstractMultigraph) end
 
-adjacency_matrix(g::AbstractMultigraph) = g.adjmx
-
-function has_edge(g::AbstractMultigraph{T, U}, e::AbstractMultipleEdge{T, U}) where {T<:Integer, U<:Integer}
-    if src(e) <= nv(g) && dst(e) <= nv(g)
-        return g.adjmx[src(e), dst(e)] >= mul(e)
-    else
-        return false
+function has_edge(mg::AbstractMultigraph, e::AbstractMultipleEdge)
+    s = src(e)
+    d = dst(e)
+    if has_vertex(mg, s) && has_vertex(mg, d)
+        return mul(mg, s, d) >= mul(e)
     end
+    return false
 end
 
-has_edge(g::AbstractMultigraph{T, U}, t) where {T<:Integer, U<:Integer} = has_edge(g, MultipleEdge(t))
-add_edge!(g::AbstractMultigraph{T, U}, t) where {T<:Integer, U<:Integer} = add_edge!(g, MultipleEdge(t))
-rem_edge!(g::AbstractMultigraph{T, U}, t) where {T<:Integer, U<:Integer} = rem_edge!(g, MultipleEdge(t))
+has_edge(mg::AbstractMultigraph, t) = has_edge(mg, MultipleEdge(t))
+add_edge!(mg::AbstractMultigraph, t) = add_edge!(mg, MultipleEdge(t))
+rem_edge!(mg::AbstractMultigraph, t) = rem_edge!(mg, MultipleEdge(t))
 
-has_edge(g::AbstractMultigraph{T, U}, x, y) where {T<:Integer, U<:Integer} = has_edge(g, MultipleEdge(x, y))
-add_edge!(g::AbstractMultigraph{T, U}, x, y) where {T<:Integer, U<:Integer} = add_edge!(g, MultipleEdge(x, y))
-rem_edge!(g::AbstractMultigraph{T, U}, x, y) where {T<:Integer, U<:Integer} = rem_edge!(g, MultipleEdge(x, y))
+has_edge(mg::AbstractMultigraph, x, y) = has_edge(mg, MultipleEdge(x, y))
+add_edge!(mg::AbstractMultigraph, x, y) = add_edge!(mg, MultipleEdge(x, y))
+rem_edge!(mg::AbstractMultigraph, x, y) = rem_edge!(mg, MultipleEdge(x, y))
 
 """
-    has_edge(g::AbstractMultigraph, s, d, mul)
+    has_edge(mg::AbstractMultigraph, s, d, mul)
 
-Return `true` if `g` has a multiple edge from `s` to `d` whose multiplicity
+Return `true` if `mg` has a multiple edge from `s` to `d` whose multiplicity
 is not less than `mul`.
 
 ## Examples
-```jldoctest
+```julia
 julia> using LightGraphs, Multigraphs
 
-julia> g = Multigraph(3);
+julia> mg = Multigraph(3);
 
-julia> add_edge!(g, 1, 2, 2);
+julia> add_edge!(mg, 1, 2, 2);
 
-julia> has_edge(g, 1, 2, 3)
+julia> has_edge(mg, 1, 2, 3)
 false
 
-julia> has_edge(g, 1, 2, 2)
+julia> has_edge(mg, 1, 2, 2)
 true
 ```
 """
-has_edge(g::AbstractMultigraph{T, U}, x, y, z) where {T<:Integer, U<:Integer} = has_edge(g, MultipleEdge(x, y, z))
+has_edge(mg::AbstractMultigraph, x, y, z) = has_edge(mg, MultipleEdge(x, y, z))
 
 """
-    add_edge!(g::AbstractMultigraph, s, d, mul)
+    add_edge!(mg::AbstractMultigraph, s, d, mul)
 
 Add a multiple edge from `s` to `d` multiplicity `mul`. If there is a multiple
 edge from `s` to `d`, it will increase its multiplicity by `mul`.
@@ -83,111 +81,71 @@ edge from `s` to `d`, it will increase its multiplicity by `mul`.
 Return `true` multiple edge was added successfully, otherwise return `false`.
 
 ## Examples
-```jldoctest
+```julia
 julia> using LightGraphs, Multigraphs
 
-julia> g = Multigraph(3);
+julia> mg = Multigraph(3);
 
 julia> e = MultipleEdge(1, 2, 1);
 
-julia> add_edge!(g, e);
+julia> add_edge!(mg, e);
 
-julia> ne(g, true)
+julia> ne(mg, true)
 1
 
-julia> add_edge!(g, e);
+julia> add_edge!(mg, e);
 
-julia> ne(g, true)
+julia> ne(mg, true)
 2
 ```
 """
-add_edge!(g::AbstractMultigraph{T, U}, x, y, z) where {T<:Integer, U<:Integer} = add_edge!(g, MultipleEdge(x, y, z))
+add_edge!(mg::AbstractMultigraph, x, y, z) = add_edge!(mg, MultipleEdge(x, y, z))
 
 """
-    rem_edge!(g::AbstractMultigraph, s, d, mul)
+    rem_edge!(mg::AbstractMultigraph, s, d, mul)
 
-Remove the multiplicity of edge from `s` to `d` by `mul` in `g`, if `g` has such
+Remove the multiplicity of edge from `s` to `d` by `mul` in `mg`, if `mg` has such
 a multiple edge.
 
 ## Examples
-```jldoctest
+```julia
 julia> using LightGraphs, Multigraphs
 
-julia> g = Multigraph(3);
+julia> mg = Multigraph(3);
 
-julia> add_edge!(g, 1, 2, 2);
+julia> add_edge!(mg, 1, 2, 2);
 
-julia> rem_edge!(g, 1, 2, 3)
+julia> rem_edge!(mg, 1, 2, 3)
 false
 
-julia> rem_edge!(g, 1, 2, 2)
+julia> rem_edge!(mg, 1, 2, 2)
 true
 ```
 """
-rem_edge!(g::AbstractMultigraph{T, U}, x, y, z) where {T<:Integer, U<:Integer} = rem_edge!(g, MultipleEdge(x, y, z))
+rem_edge!(mg::AbstractMultigraph, x, y, z) = rem_edge!(mg, MultipleEdge(x, y, z))
 
-has_vertex(g::AbstractMultigraph, v::Integer) = v in vertices(g)
-function rem_vertex!(g::AbstractMultigraph{T, U}, v::T) where {T<:Integer, U<:Integer}
-    vsg = vertices(g)
-    vmap = [u for u in vsg]
-    if v in vsg
-        g.adjmx = g.adjmx[vsg .!= v, vsg .!= v]
-        deleteat!(vmap, v)
-        dropzeros!(g.adjmx)
-    end
-    return vmap
-end
+has_vertex(mg::AbstractMultigraph, v::Integer) = v in vertices(mg)
+rem_vertex!(mg::AbstractMultigraph{T}, v::T) where {T<:Integer} = rem_vertices!(mg, [v])
+add_vertex!(mg::AbstractMultigraph{T}) where {T<:Integer} = add_vertices!(mg, one(T))
 
-function rem_vertices!(g::AbstractMultigraph{T, U}, vs::Vector{T}) where {T<:Integer, U<:Integer}
-    vsg = vertices(g)
-    vmap = [u for u in vsg]
-    for v in sort(vs, rev = true)
-        rem_vertex!(g, v)
-        if v <= length(vmap)
-            deleteat!(vmap, v)
-        end
-    end
-    return vmap
-end
-
-function add_vertices!(g::AbstractMultigraph{T, U}, n::T) where {T<:Integer, U<:Integer}
-    mat = g.adjmx
-    mat = SparseMatrixCSC(mat.m+n, mat.n+n, [mat.colptr; [mat.colptr[end] for i = one(T):n]], mat.rowval, mat.nzval)
-    g.adjmx = mat
-    g
-end
-
-add_vertex!(g::AbstractMultigraph{T, U}) where {T<:Integer, U<:Integer} = add_vertices!(g, one(T))
-
-function outneighbors(g::AbstractMultigraph, v::Integer)
-    if v in vertices(g)
-        mat = g.adjmx
-        return mat[v, :].nzind
-    end
-end
-
-function inneighbors(g::AbstractMultigraph, v::Integer)
-    if v in vertices(g)
-        mat = g.adjmx
-        return mat[:, v].nzind
-    end
-end
+function outneighbors(mg::AbstractMultigraph, v) end
+function inneighbors(mg::AbstractMultigraph, v) end
 
 """
-    edges(g::AbstractMultigraph)
+    edges(mg::AbstractMultigraph)
 
-Return a  `MultipleEdgeIter` for `g`.
+Return a  `MultipleEdgeIter` for `mg`.
 
 ## Examples
 ```jltestdoc
 julia>
 julia> using LightGraphs, Multigraphs
 
-julia> g = Multigraph(path_graph(4));
+julia> mg = Multigraph(path_graph(4));
 
-julia> add_edge!(g, 1, 3, 2);
+julia> add_edge!(mg, 1, 3, 2);
 
-julia> collect(edges(g))
+julia> collect(edges(mg))
 4-element Array{Any,1}:
  Multiple edge 1 => 2 with multiplicity 1
  Multiple edge 1 => 3 with multiplicity 2
@@ -196,4 +154,10 @@ julia> collect(edges(g))
 
 ```
 """
-edges(g::AbstractMultigraph) = MultipleEdgeIter(g)
+edges(mg::AbstractMultigraph) = MultipleEdgeIter(mg)
+
+"""
+    mul(mg::AbstractMultigraph, src, dst)
+
+Return the multiplicity of the edge from `src` to `dst`.
+"""
