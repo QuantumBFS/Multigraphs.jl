@@ -54,11 +54,11 @@ end
 MultipleEdge(t::NTuple{3}) = MultipleEdge(t[1], t[2], t[3])
 MultipleEdge(t::NTuple{2}) = MultipleEdge(t[1], t[2], one(Int))
 MultipleEdge(p::Pair) = MultipleEdge(p.first, p.second, one(Int))
-MultipleEdge(e::T) where {T<:AbstractEdge} = MultipleEdge{eltype(e), Int}(src(e), dst(e), one(Int))
+MultipleEdge(e::T) where {T<:AbstractEdge} = MultipleEdge(src(e), dst(e), one(Int))
 eltype(e::T) where {T<:AbstractMultipleEdge} = eltype(src(e))
 
-src(e::AbstractMultipleEdge) = e.src
-dst(e::AbstractMultipleEdge) = e.dst
+src(e::MultipleEdge) = e.src
+dst(e::MultipleEdge) = e.dst
 
 """
     mul(e)
@@ -76,7 +76,7 @@ julia> mul(me)
 3
 
 """
-mul(e::AbstractMultipleEdge) = e.mul
+mul(e::MultipleEdge) = e.mul
 
 show(io::IO, e::AbstractMultipleEdge) = print(io, "Multiple edge $(src(e)) => $(dst(e)) with multiplicity $(mul(e))")
 
