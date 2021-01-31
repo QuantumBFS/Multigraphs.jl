@@ -1,6 +1,6 @@
 # Multigraphs
 
-[![Build Status](https://travis-ci.com/QuantumBFS/Multigraphs.jl.svg?branch=master)](https://travis-ci.com/QuantumBFS/Multigraphs.jl)
+[![CI](https://github.com/QuantumBFS/Multigraphs.jl/workflows/CI/badge.svg)](https://github.com/QuantumBFS/Multigraphs.jl/actions)
 [![Codecov](https://codecov.io/gh/QuantumBFS/Multigraphs.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/QuantumBFS/Multigraphs.jl)
 
 Multigraphs extension for `LightGraphs.jl`.
