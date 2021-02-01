@@ -12,6 +12,7 @@ function iterate(eit::MultipleEdgeIter{G}, state=(one(eltype(eit.g)), one(eltype
     g = eit.g
     n = nv(g)
     vs = vertices(g)
+    sort!(vs)
     u, i = state
 
     @inbounds while u <= n
