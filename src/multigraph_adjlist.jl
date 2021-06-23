@@ -21,12 +21,12 @@ mutable struct Multigraph{T<:Integer} <: AbstractMultigraph{T}
                 error("Some vertices connected to $v is not in the multigraph!")
             end
         end
-        _idmax = maximum(vs)
+        _idmax >= 0 || (_idmax = isempty(adjlist) ? 0 : maximum(vs))
         new{T}(adjlist, _idmax)
     end
 end
 
-Multigraph(adjlist::Dict{T, Vector{T}}) where {T<:Integer} = Multigraph{T}(adjlist, maximum(keys(adjlist)))
+Multigraph(adjlist::Dict{T, Vector{T}}) where {T<:Integer} = Multigraph{T}(adjlist, isempty(adjlist) ? 0 : maximum(keys(adjlist)))
 function Multigraph(adjmx::AbstractMatrix{U}) where {U<:Integer}
     m, n = size(adjmx)
     if m != n
@@ -48,7 +48,14 @@ function Multigraph(adjmx::AbstractMatrix{U}) where {U<:Integer}
     end
     Multigraph{Int}(adjlist, m)
 end
-Multigraph(n::T) where {T<:Integer} = Multigraph(Dict(zip(T(1):n, [T[] for _ = 1:n])))
+function Multigraph(n::T) where {T<:Integer} 
+    n >= 0 || error("Number of vertices should be non-negative")
+    adjlist = Dict{T, Vector{T}}()
+    for i = 1:n
+        adjlist[i] = T[]
+    end
+    return Multigraph(adjlist)
+end
 Multigraph(g::SimpleGraph{T}) where {T<:Integer} = Multigraph(Dict(zip(T(1):nv(g), LightGraphs.SimpleGraphs.fadj(g))))
 
 copy(mg::Multigraph{T}) where {T} = Multigraph{T}(deepcopy(mg.adjlist), mg._idmax)
