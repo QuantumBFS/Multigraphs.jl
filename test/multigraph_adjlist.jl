@@ -66,3 +66,6 @@ for v in vertices(g)
 end
 add_vertex!(g)
 @test indegree(g) == outdegree(g)
+
+mg0 = Multigraph(0)
+@test nv(mg0) == ne(mg0) == 0

@@ -21,12 +21,12 @@ mutable struct DiMultigraph{T<:Integer} <: AbstractMultigraph{T}
                 error("Some vertices connected to $v is not in the multigraph!")
             end
         end
-        _idmax = maximum(vs)
+        _idmax >= 0 || (_idmax = isempty(adjlist) ? 0 : maximum(vs))
         new{T}(adjlist, _idmax)
     end
 end
 
-DiMultigraph(adjlist::Dict{T, Vector{T}}) where {T<:Integer} = DiMultigraph{T}(adjlist, maximum(keys(adjlist)))
+DiMultigraph(adjlist::Dict{T, Vector{T}}) where {T<:Integer} = DiMultigraph{T}(adjlist, isempty(adjlist) ? 0 : maximum(keys(adjlist)))
 function DiMultigraph(adjmx::AbstractMatrix{U}) where {U<:Integer}
     m, n = size(adjmx)
     if m != n
@@ -45,7 +45,14 @@ function DiMultigraph(adjmx::AbstractMatrix{U}) where {U<:Integer}
     end
     DiMultigraph{Int}(adjlist, m)
 end
-DiMultigraph(n::T) where {T<:Integer} = DiMultigraph(Dict(zip(T(1):n, [T[] for _ = 1:n])))
+function DiMultigraph(n::T) where {T<:Integer} 
+    n >= 0 || error("Number of vertices should be non-negative")
+    adjlist = Dict{T, Vector{T}}()
+    for i = 1:n
+        adjlist[i] = T[]
+    end
+    return DiMultigraph(adjlist)
+end
 DiMultigraph(g::SimpleDiGraph{T}) where {T<:Integer} = DiMultigraph(Dict(zip(T(1):nv(g), LightGraphs.SimpleGraphs.fadj(g))))
 
 copy(mg::DiMultigraph{T}) where {T} = DiMultigraph{T}(deepcopy(mg.adjlist), mg._idmax)

@@ -70,3 +70,6 @@ collect(edges(g))
 @test degree(g, 2) != indegree(g, 2)
 add_vertex!(g)
 @test indegree(g) != outdegree(g)
+
+dmg0 = DiMultigraph(0)
+@test nv(dmg0) == ne(dmg0) == 0
