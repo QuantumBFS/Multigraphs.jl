@@ -1,7 +1,7 @@
 name = "Multigraphs"
 uuid = "7ebac608-6c66-46e6-9856-b5f43e107bac"
 authors = ["Chen Zhao"]
-version = "0.2.1"
+version = "0.2.2"
 
 [deps]
 LightGraphs = "093fc24a-ae57-5d10-9952-331d41423f4d"
