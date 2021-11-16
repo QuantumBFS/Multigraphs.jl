@@ -3,7 +3,7 @@
 [![CI](https://github.com/QuantumBFS/Multigraphs.jl/workflows/CI/badge.svg)](https://github.com/QuantumBFS/Multigraphs.jl/actions)
 [![Codecov](https://codecov.io/gh/QuantumBFS/Multigraphs.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/QuantumBFS/Multigraphs.jl)
 
-Multigraphs extension for `LightGraphs.jl`.
+Multigraphs extension for `Graphs.jl`.
 
 ## Installation
 
@@ -25,7 +25,7 @@ pkg> add Multigraphs
 ## Examples
 
 ```julia
-using LightGraphs, Multigraphs
+using Graphs, Multigraphs
 
 # create a undirected multigraph with 3 vertices and 0 multiple edges
 # use DiMultigraph for directed multigraphs
@@ -53,7 +53,7 @@ julia> mes = [me for me in edges(mg)]
 Multiple edge 1 => 2 with multiplicity 2
 Multiple edge 2 => 3 with multiplicity 1
 
-# here e is a LightGraphs.SimpleEdge
+# here e is a Graphs.SimpleEdge
 julia> for e in mes[1] 
            println(e)
        end

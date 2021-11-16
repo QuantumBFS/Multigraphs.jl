@@ -1,7 +1,7 @@
-using LightGraphs, SparseArrays, LinearAlgebra
+using Graphs, SparseArrays, LinearAlgebra
 
 import Base: copy
-import LightGraphs: nv, has_edge, add_edge!, rem_edge!, rem_vertex!,
+import Graphs: nv, has_edge, add_edge!, rem_edge!, rem_vertex!,
     rem_vertices!, add_vertex!, add_vertices!, outneighbors, inneighbors, neighbors,
     vertices, adjacency_matrix, ne, is_directed, degree, indegree, outdegree, edges,
     has_vertex, all_neighbors
@@ -53,7 +53,7 @@ function DiMultigraph(n::T) where {T<:Integer}
     end
     return DiMultigraph(adjlist)
 end
-DiMultigraph(g::SimpleDiGraph{T}) where {T<:Integer} = DiMultigraph(Dict(zip(T(1):nv(g), LightGraphs.SimpleGraphs.fadj(g))))
+DiMultigraph(g::SimpleDiGraph{T}) where {T<:Integer} = DiMultigraph(Dict(zip(T(1):nv(g), Graphs.SimpleGraphs.fadj(g))))
 
 copy(mg::DiMultigraph{T}) where {T} = DiMultigraph{T}(deepcopy(mg.adjlist), mg._idmax)
 

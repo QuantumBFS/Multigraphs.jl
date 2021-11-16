@@ -1,8 +1,8 @@
-using LightGraphs
+using Graphs
 using SparseArrays
 
 import Base: show, eltype, copy
-import LightGraphs: nv, has_edge, has_vertex, add_edge!, rem_edge!, rem_vertex!,
+import Graphs: nv, has_edge, has_vertex, add_edge!, rem_edge!, rem_vertex!,
     rem_vertices!, add_vertex!, add_vertices!, outneighbors, inneighbors, vertices, edges,
     adjacency_matrix, src, dst, nv, edgetype
 
@@ -57,7 +57,7 @@ is not less than `mul`.
 
 ## Examples
 ```julia
-julia> using LightGraphs, Multigraphs
+julia> using Graphs, Multigraphs
 
 julia> mg = Multigraph(3);
 
@@ -82,7 +82,7 @@ Return `true` multiple edge was added successfully, otherwise return `false`.
 
 ## Examples
 ```julia
-julia> using LightGraphs, Multigraphs
+julia> using Graphs, Multigraphs
 
 julia> mg = Multigraph(3);
 
@@ -109,7 +109,7 @@ a multiple edge.
 
 ## Examples
 ```julia
-julia> using LightGraphs, Multigraphs
+julia> using Graphs, Multigraphs
 
 julia> mg = Multigraph(3);
 
@@ -139,7 +139,7 @@ Return a  `MultipleEdgeIter` for `mg`.
 ## Examples
 ```jltestdoc
 julia>
-julia> using LightGraphs, Multigraphs
+julia> using Graphs, Multigraphs
 
 julia> mg = Multigraph(path_graph(4));
 

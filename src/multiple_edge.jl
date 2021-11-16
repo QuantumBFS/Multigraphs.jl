@@ -1,5 +1,5 @@
 import Base: eltype, Pair, Tuple, show, ==, iterate, length
-import LightGraphs: AbstractEdge, SimpleEdge, src, dst, reverse
+import Graphs: AbstractEdge, SimpleEdge, src, dst, reverse
 
 export AbstractMultipleEdge, MultipleEdge, mul
 
@@ -17,7 +17,7 @@ A struct representing multiple edges.
 
 ## Examples
 ```jltestdoc
-julia> using LightGraphs, Multigraphs
+julia> using Graphs, Multigraphs
 
 julia> me = MultipleEdge(1, 2, 3)
 Multiple edge 1 => 2 with multiplicity 3
@@ -67,7 +67,7 @@ Return the multiplicity of the multiple edge `e`.
 
 ## Examples
 ```jltestdoc
-julia> using LightGraphs, Multigraphs
+julia> using Graphs, Multigraphs
 
 julia> me = MultipleEdge(1, 2, 3)
 Multiple edge 1 => 2 with multiplicity 3

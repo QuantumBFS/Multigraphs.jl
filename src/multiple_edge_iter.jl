@@ -1,4 +1,4 @@
-using LightGraphs
+using Graphs
 
 import Base: eltype, iterate, length
 
