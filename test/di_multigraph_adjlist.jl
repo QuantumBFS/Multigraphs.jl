@@ -1,4 +1,4 @@
-using Multigraphs, LightGraphs, SparseArrays
+using Multigraphs, Graphs, SparseArrays
 using Test
 try
     m2 = spzeros(Int, 2, 3)

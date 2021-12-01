@@ -1,4 +1,4 @@
-using Multigraphs, LightGraphs, SparseArrays
+using Multigraphs, Graphs, SparseArrays
 try
     m2 = spzeros(Int, 2, 3)
     dg = Multigraph(m2)

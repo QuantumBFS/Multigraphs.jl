@@ -5,7 +5,7 @@ catch err
     @test err != nothing
 end
 @test src(me) == 1 && dst(me) == 2 && mul(me) == 3
-e0 = LightGraphs.SimpleEdge(me)
+e0 = Graphs.SimpleEdge(me)
 MultipleEdge(e0)
 @test MultipleEdge(1, 2) == e0
 @test e0 == MultipleEdge(1, 2)
