@@ -1,4 +1,4 @@
-using Multigraphs, LightGraphs, SparseArrays
+using Multigraphs, Graphs, SparseArrays
 using Test
 
 @testset "multiple_edge.jl" begin

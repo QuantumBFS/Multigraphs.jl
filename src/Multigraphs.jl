@@ -1,7 +1,7 @@
 """
     Multigraphs
 
-An multigraph extension for `LightGraphs`.
+An multigraph extension for `Graphs`.
 """
 module Multigraphs
 
