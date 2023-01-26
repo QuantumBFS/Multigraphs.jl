@@ -48,6 +48,9 @@ function Multigraph(adjmx::AbstractMatrix{U}) where {U<:Integer}
     end
     Multigraph{Int}(adjlist, m)
 end
+Multigraph() = Multigraph(0)
+Multigraph{T}() where T = Multigraph(0)
+Multigraph{T}(t::T) where T = Multigraph(t)
 function Multigraph(n::T) where {T<:Integer} 
     n >= 0 || error("Number of vertices should be non-negative")
     adjlist = Dict{T, Vector{T}}()

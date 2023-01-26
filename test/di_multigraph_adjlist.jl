@@ -73,3 +73,10 @@ add_vertex!(g)
 
 dmg0 = DiMultigraph(0)
 @test nv(dmg0) == ne(dmg0) == 0
+
+#test constructor
+@test try DiMultigraph(1); true; catch; false; end
+@test try DiMultigraph{Int}(1); true; catch; false; end
+@test try DiMultigraph(); true; catch; false; end
+@test try DiMultigraph{Int}(); true; catch; false; end
+
