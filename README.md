@@ -25,7 +25,7 @@ pkg> add Multigraphs
 ## Examples
 
 ```julia
-using Graphs, Multigraphs
+julia> using Graphs, Multigraphs
 
 # create a undirected multigraph with 3 vertices and 0 multiple edges
 # use DiMultigraph for directed multigraphs
