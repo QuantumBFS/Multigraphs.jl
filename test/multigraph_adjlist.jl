@@ -39,6 +39,7 @@ g1 = Multigraph(path_graph(3))
 @test adjacency_matrix(g) == m
 
 @test !is_directed(g)
+@test !is_directed(typeof(g))
 @test edgetype(g) == MultipleEdge{Int, Int}
 @test size(adjacency_matrix(g), 1) == 4
 

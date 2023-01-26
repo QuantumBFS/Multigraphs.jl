@@ -152,6 +152,7 @@ function mul(mg::Multigraph, s::Integer, d::Integer)
 end
 
 is_directed(mg::Multigraph) = false
+is_directed(mg::Type{<:Multigraph}) = false
 function ne(mg::Multigraph; count_mul::Bool = false)
     if count_mul
         return sum([sum(mg.adjlist[v] .>= v) for v in vertices(mg)])
