@@ -165,6 +165,7 @@ function mul(mg::DiMultigraph, s::Integer, d::Integer)
 end
 
 is_directed(mg::DiMultigraph) = true
+is_directed(mg::Type{<:DiMultigraph}) = true
 function ne(mg::DiMultigraph; count_mul::Bool = false)
     if count_mul
         return sum([length(mg.adjlist[v]) for v in vertices(mg)])
