@@ -69,3 +69,10 @@ add_vertex!(g)
 
 mg0 = Multigraph(0)
 @test nv(mg0) == ne(mg0) == 0
+
+#test constructor
+@test try Multigraph(1); true; catch; false; end
+@test try Multigraph{Int}(1); true; catch; false; end
+@test try Multigraph(); true; catch; false; end
+@test try Multigraph{Int}(); true; catch; false; end
+

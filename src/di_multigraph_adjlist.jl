@@ -45,6 +45,9 @@ function DiMultigraph(adjmx::AbstractMatrix{U}) where {U<:Integer}
     end
     DiMultigraph{Int}(adjlist, m)
 end
+DiMultigraph() = DiMultigraph(0)
+DiMultigraph{T}() where T = DiMultigraph(0)
+DiMultigraph{T}(t::T) where T = DiMultigraph(t)
 function DiMultigraph(n::T) where {T<:Integer} 
     n >= 0 || error("Number of vertices should be non-negative")
     adjlist = Dict{T, Vector{T}}()
