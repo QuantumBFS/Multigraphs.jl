@@ -131,7 +131,7 @@ function add_vertices!(mg::Multigraph{T}, n::Integer) where {T<:Integer}
     for i in new_ids
         mg.adjlist[i] = T[]
     end
-    return new_ids
+    return length(new_ids)
 end
 
 function outneighbors(mg::Multigraph, v::Integer; count_mul::Bool = false)

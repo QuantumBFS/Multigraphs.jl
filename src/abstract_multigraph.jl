@@ -126,7 +126,7 @@ rem_edge!(mg::AbstractMultigraph, x, y, z) = rem_edge!(mg, MultipleEdge(x, y, z)
 
 has_vertex(mg::AbstractMultigraph, v::Integer) = v in vertices(mg)
 rem_vertex!(mg::AbstractMultigraph{T}, v::T) where {T<:Integer} = rem_vertices!(mg, [v])
-add_vertex!(mg::AbstractMultigraph{T}) where {T<:Integer} = add_vertices!(mg, one(T))
+add_vertex!(mg::AbstractMultigraph{T}) where {T<:Integer} = add_vertices!(mg, one(T)) == 1 ? true : false
 
 function outneighbors(mg::AbstractMultigraph, v) end
 function inneighbors(mg::AbstractMultigraph, v) end

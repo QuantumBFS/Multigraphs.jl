@@ -69,3 +69,7 @@ add_vertex!(g)
 
 mg0 = Multigraph(0)
 @test nv(mg0) == ne(mg0) == 0
+# addvertex returns correct type
+@test add_vertex!(mg0)
+@test add_vertices!(mg0, 5) == 5
+
