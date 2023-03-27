@@ -73,3 +73,6 @@ add_vertex!(g)
 
 dmg0 = DiMultigraph(0)
 @test nv(dmg0) == ne(dmg0) == 0
+
+@test isa(DiMultigraph{Int32}(0), DiMultigraph{Int32})
+@test isa(DiMultigraph(Int32(0)), DiMultigraph{Int32})

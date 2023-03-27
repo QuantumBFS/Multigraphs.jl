@@ -26,7 +26,7 @@ mutable struct DiMultigraph{T<:Integer} <: AbstractMultigraph{T}
     end
 end
 
-DiMultigraph(adjlist::Dict{T, Vector{T}}) where {T<:Integer} = DiMultigraph{T}(adjlist, isempty(adjlist) ? 0 : maximum(keys(adjlist)))
+DiMultigraph(adjlist::Dict{T, Vector{T}}) where {T<:Integer} = DiMultigraph{T}(adjlist, T(isempty(adjlist) ? 0 : maximum(keys(adjlist))))
 function DiMultigraph(adjmx::AbstractMatrix{U}) where {U<:Integer}
     m, n = size(adjmx)
     if m != n
@@ -45,7 +45,8 @@ function DiMultigraph(adjmx::AbstractMatrix{U}) where {U<:Integer}
     end
     DiMultigraph{Int}(adjlist, m)
 end
-function DiMultigraph(n::T) where {T<:Integer} 
+DiMultigraph{T}(n::Integer) where {T<:Integer} = DiMultigraph(T(n))
+function DiMultigraph(n::T) where {T<:Integer}
     n >= 0 || error("Number of vertices should be non-negative")
     adjlist = Dict{T, Vector{T}}()
     for i = 1:n
@@ -139,7 +140,7 @@ function outneighbors(mg::DiMultigraph, v::Integer; count_mul::Bool = false)
 end
 function inneighbors(mg::DiMultigraph{T}, v::Integer; count_mul::Bool = false) where T
     has_vertex(mg, v) || error("Vertex not found!")
-    
+
     innb = T[]
     for u in vertices(mg)
         mul_u_v = length(searchsorted(outneighbors(mg, u), v))
